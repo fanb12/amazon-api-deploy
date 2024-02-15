@@ -14,18 +14,22 @@ app.get("/", (req, res) => {
   });
 });
 app.post("/payment/create", async (req, res) => {
-  const total = req.query.total;
-  if (total > 0) {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: total,
-      currency: "usd",
-    });
-    res.status(201).json({ clientSecret: paymentIntent.client_secret });
-  } else {
-    res.status(403).json({ message: "total must be greater than 0" });
+  try {
+    const total = req.query.total;
+    if (total > 0) {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: parseInt(total),
+        currency: "usd",
+      });
+      res.status(201).json({ clientSecret: paymentIntent.client_secret });
+    } else {
+      res.status(400).json({ message: "total must be greater than 0" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "server error please try again" });
   }
 });
-app.listen(4000, (err) => {
+app.listen(5000, (err) => {
   if (err) throw err;
-  console.log("Amazon server Running on PORT:4000,http://localhost:4000");
+  console.log("Amazon server Running on PORT:4000,http://localhost:5000");
 });
