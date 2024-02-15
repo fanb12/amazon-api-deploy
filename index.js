@@ -5,7 +5,7 @@ dotenv.config();
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const app = express();
 //firebase fix error
-setGlobalOption({ maxInstance: 10 });
+//setGlobalOption({ maxInstance: 10 });
 app.use(cors({ origin: true }));
 app.use(express.json());
 app.get("/", (req, res) => {
